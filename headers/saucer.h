@@ -7,4 +7,5 @@ typedef struct saucer{
     structures saucerstructure;
     structures projectile;
     void attack(saucer *player);
+    saucer *next;
 }saucer;
