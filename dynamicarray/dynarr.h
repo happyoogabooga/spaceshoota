@@ -1,32 +1,12 @@
 #include <stdlib.h>
 #include "../headers/saucer.h"
+#include <stdio.h>
 //this is really needed, get it working as soon as possible
-struct saucerlist{
-    struct saucer *head;
-    saucer* searchsaucer(saucer *player){
-        saucer *dummy = head;
-        while(dummy != NULL){
-            if(dummy == player){
-                return dummy;
-            }
-            dummy = dummy->next;
-        }
-        return NULL;
-    }
+typedef struct linkedlist{
+    saucer* head;
     //need to do cleanup with this
-    void removesaucer(saucer *player){
-        saucer *dummy = head;
-        while(dummy->next  != player || dummy->next != NULL){
-            dummy = dummy->next;
-        }
-        if(dummy->next == player){
-            dummy->next = dummy->next->next;
-        }
-    }
-    void addsaucer(saucer *player){
-        saucer *dummy = head;
-        while(dummy->next != NULL)dummy = dummy->next;
-        dummy->next = player;
-    }
-}saucerlist;
-//this is a dynamic array for saucers
+}linkedlist;
+void addnode(int index, saucer *n, linkedlist *l);
+void push_back(saucer * n, linkedlist *l);
+void removenode(saucer *n, linkedlist *l);
+void displayitem(linkedlist *l, SDL_Renderer * renderer);

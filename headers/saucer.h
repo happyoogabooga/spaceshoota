@@ -1,11 +1,14 @@
 #include "structure.h"
-void attack(saucer *player);
 //this is a simple project, make that one space atari game
 //before doing this work on the traingle col function and perfect it
 //main character class
+//depending on the type of saucer, display a different saucer
+enum typeofsaucer{
+    long_range, short_range, medium_range, mini_boss
+}typeofsaucer;
 typedef struct saucer{
+    enum typeofsaucer Type;
     structures saucerstructure;
     structures projectile;
-    void attack(saucer *player);
-    saucer *next;
+    struct saucer *next;
 }saucer;
