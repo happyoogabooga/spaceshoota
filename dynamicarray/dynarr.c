@@ -59,7 +59,7 @@ void removenode(saucer *n, linkedlist *l) {
 void displayitem(linkedlist *l, SDL_Renderer * renderer){
     saucer *H = l->head;
     //this displays all of my saucers, this is temporary.
-    while(H != NULL){
-        SDL_RenderCopy(renderer, IMG_LoadTexture(renderer, H->saucerstructure.flocation), &H->saucerstructure.structurelookpos, &H->saucerstructure.hitbox);
-    }
+    //it makes more sense to have every saucer have its own special way of being displayed
+    //not every one will be the same anyways
+    saucer->display();
 }

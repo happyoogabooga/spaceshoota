@@ -8,5 +8,11 @@ typedef struct structures{
     SDL_Rect structurelookpos;
     //this is the file location which will be used in rendering the structure
     const char* flocation;
+    //next structure, if applicable
+    structures * next;
 }structures;
+//every single displayable thing in this game will have its hitbox in here
+struct listofstructures{
+    structures * head;    
+}listofstructures;
 #endif

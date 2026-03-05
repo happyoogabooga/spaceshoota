@@ -12,3 +12,4 @@ typedef struct saucer{
     structures projectile;
     struct saucer *next;
 }saucer;
+void display(saucer* S);
