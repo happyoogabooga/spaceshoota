@@ -9,4 +9,6 @@ typedef struct linkedlist{
 void addnode(int index, saucer *n, linkedlist *l);
 void push_back(saucer * n, linkedlist *l);
 void removenode(saucer *n, linkedlist *l);
-void displayitem(linkedlist *l, SDL_Renderer * renderer);
+void displayitems(linkedlist *l, SDL_Renderer * renderer);
+//define movement before collision
+//display the saucer to the screen before you define movement 

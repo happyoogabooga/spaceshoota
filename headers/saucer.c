@@ -1,18 +1,8 @@
 #include "saucer.h"
 #include "trianglecoli.h"
 #include "structure.h"
-void display(saucer *S){
-    switch(S->Type){
-        case long_range:
-        //if ! collide with bullet display, if collide then remove
-        
-        case short_range:
-        //if ! collide with bullet display, if collide then remove
-
-        case medium_range:
-        //if ! collide with bullet display, if collide then remove
-        
-        case mini_boss:
-        //if ! collide with bullet display, if collide then remove
-    }
+//SDL_Renderer might just be temporary
+//maybe make this an integer that returns false if not displayed dunno
+void display(saucer *S, SDL_Renderer *renderer){
+    SDL_RenderCopy(renderer, IMG_LoadTexture(renderer, S->saucerstructure.flocation), &S->saucerstructure.structurelookpos, &S->saucerstructure.hitbox);
 }

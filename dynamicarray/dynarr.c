@@ -56,10 +56,11 @@ void removenode(saucer *n, linkedlist *l) {
     // unlink saucer
     curr->next = curr->next->next;
 }
+//hope this is good 
 void displayitem(linkedlist *l, SDL_Renderer * renderer){
     saucer *H = l->head;
-    //this displays all of my saucers, this is temporary.
-    //it makes more sense to have every saucer have its own special way of being displayed
-    //not every one will be the same anyways
-    saucer->display();
+    while(H != NULL){
+        display(H, renderer);
+        H = H->next;
+    }
 }
