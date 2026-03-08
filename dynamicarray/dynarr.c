@@ -29,6 +29,9 @@ void push_back(saucer * n, linkedlist *l){
     l->head = n;
     return;
     }
+
+    n->next = NULL;
+    
     saucer * curr = l->head;
     while(curr->next != NULL){
         curr = curr->next;
@@ -57,7 +60,7 @@ void removenode(saucer *n, linkedlist *l) {
     curr->next = curr->next->next;
 }
 //hope this is good 
-void displayitem(linkedlist *l, SDL_Renderer * renderer){
+void displayitems(linkedlist *l, SDL_Renderer * renderer){
     saucer *H = l->head;
     while(H != NULL){
         display(H, renderer);

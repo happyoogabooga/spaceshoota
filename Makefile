@@ -11,7 +11,7 @@ LDFLAGS = -L C:/msys64/mingw64/lib \
 
 # Target
 TARGET = main.exe
-SRC = shoota.c
+SRC = shoota.c headers/saucer.c headers/structure.c headers/trianglecoli.c
 DYNARR_SRC = dynamicarray/dynarr.c
 OBJS = $(SRC:.c=.o) $(DYNARR_SRC:.c=.o)
 
@@ -25,7 +25,7 @@ $(TARGET): $(OBJS)
 # Clean rule
 clean:
 	rm -f *.o dynamicarray/*.o main.exe
-
+	rm -f headers/*.o
 # Run rule
 run: $(TARGET)
 	./$(TARGET)

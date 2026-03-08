@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
 #ifndef structure_h
 #define structure_h
+#define true 1
+#define false 0
 typedef struct structures{
     //this is where it is displayed when we play
     SDL_Rect hitbox;
@@ -8,11 +10,12 @@ typedef struct structures{
     SDL_Rect structurelookpos;
     //this is the file location which will be used in rendering the structure
     const char* flocation;
-    //next structure, if applicable
-    structures * next;
+    //next , if applicable
+    struct structures *next;
 }structures;
 //every single displayable thing in this game will have its hitbox in here
-struct listofstructures{
+typedef struct listofstructures{
     structures * head;    
-}listofstructures;
+} listofstructures;
+structures makestructure(SDL_Rect hitbox, SDL_Rect structurelookpos, const char* flocation, structures *next);
 #endif
