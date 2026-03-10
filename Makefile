@@ -11,7 +11,7 @@ LDFLAGS = -L C:/msys64/mingw64/lib \
 
 # Target
 TARGET = main.exe
-SRC = shoota.c headers/saucer.c headers/structure.c headers/trianglecoli.c
+SRC = shoota.c headers/saucer.c headers/structure.c headers/trianglecoli.c headers/projectiles.c
 DYNARR_SRC = dynamicarray/dynarr.c
 OBJS = $(SRC:.c=.o) $(DYNARR_SRC:.c=.o)
 

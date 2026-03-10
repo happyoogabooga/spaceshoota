@@ -1,7 +1,4 @@
-#include <stdlib.h>
 #include "saucer.h"
-#include "trianglecoli.h"
-#include "structure.h"
 //SDL_Renderer might just be temporary
 //maybe make this an integer that returns false if not displayed dunno
 void display(saucer *S, SDL_Renderer *renderer){
@@ -19,7 +16,29 @@ saucer* createsaucer(structures S, struct saucer *next){
     if (!new) return NULL;
     new->Type = long_range;
     new->saucerstructure = S;
-    new->projectile = S;
     new->next = next;
     return new;
+}
+//idea, i could have a global list or projectiles,
+//and basically make each each suacer be able to generate a new
+//projectile, projectiles can either go north to south or south to north
+//so make a global list of two types of projectiles and increment/decrement them
+//with respect to time each frame
+void shoot(saucer sc, bool shoot, projectiles_list plist, int deltatime){
+    if(sc.Type != player){
+        //if i am shooting then add another projectile to the screen starting where
+        //the saucer is and put it in the global list
+        if(shoot){
+        addNode (&plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y, 32,32},
+            (SDL_Rect){0,64,16,16},"../sprites/spaceships.png",NULL),north));
+        }
+        moveprojectiles(&plist, deltatime);
+    }
+    else{
+        if(shoot){
+            addNode (&plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y, 32,32},
+            (SDL_Rect){0,64,16,16},"../sprites/spaceships.png",NULL),south));
+        }
+        moveprojectiles(&plist, deltatime);
+    }
 }
