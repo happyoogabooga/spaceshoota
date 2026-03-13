@@ -1,15 +1,21 @@
 #include "projectiles.h"
 void addNode(projectiles_list *plist, projectile *p){
-    if(plist->head == NULL){
-        plist->head = p;
-    }
     if(p == NULL){
         return;
     }
+
+    p->next = NULL;
+
+    if(plist->head == NULL){
+        plist->head = p;
+        return;
+    }
+
     projectile *ptemp = plist->head;
     while(ptemp->next != NULL){
         ptemp = ptemp->next;
     }
+
     ptemp->next = p;
 }
 //if the node to be deleted is head then restructure, and make head equal to next;
@@ -36,27 +42,36 @@ void deleteNode(projectiles_list *plist, projectile *p){
     }
     // If p wasn't found in the list, do nothing
 }
-
+//there is a problem here
 void displaynode(projectile *p, SDL_Renderer *renderer){
+    if(p == NULL) return;
     SDL_RenderCopy(renderer, IMG_LoadTexture(renderer, p->S.flocation),&p->S.structurelookpos ,&p->S.hitbox);
 }
 
 void displaynodes(projectiles_list *p, SDL_Renderer * renderer){
+    if(p->head == NULL || p == NULL) return;
     projectile *Node = p->head;
     while(Node != NULL){
-        display(Node,renderer);
+        displaynode(Node,renderer);
         Node = Node->next;
     }
 }
-projectile* createNode(structures S, direction Dir){
-    projectile *p;
-    p->next == NULL;
-    p->S;
+projectile* createNode(structures S, direction Dir) {
+    projectile* p = malloc(sizeof(projectile));
+
+    if (p == NULL) {   // always check malloc
+        return NULL;
+    }
+
+    p->next = NULL;
+    p->S = S;
     p->D = Dir;
+
     return p;
 }
 //obviously i can add a speed parameter to this later
-void moveprojectiles(projectiles_list *plist, int deltatime){
+void moveprojectiles(projectiles_list *plist, float deltatime){
+    if(plist->head != NULL) return;
     projectile *ptemp = plist->head;
     if(plist == NULL || ptemp == NULL){
         return;
@@ -66,11 +81,11 @@ void moveprojectiles(projectiles_list *plist, int deltatime){
         if(ptemp->D == north){
             //item->hitbox.y += speed * deltatime;
             ptemp->S.hitbox.y -= 50 *deltatime;
-
+            printf("north");
         }
         //if the bullet is going south
         else{
-            ptemp->S.hitbox.y += 50 * deltatime;
+            ptemp->S.hitbox.y += 50 *deltatime;
         }
     }
 }

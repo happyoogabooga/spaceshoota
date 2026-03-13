@@ -1,7 +1,7 @@
 CC = C:/msys64/ucrt64/bin/gcc.exe
 
 # Compiler flags
-CFLAGS = -fdiagnostics-color=always -g \
+CFLAGS = -fdiagnostics-color=always -g\
 	-I C:/msys64/ucrt64/include/SDL2 \
 	-I ./headers
 
@@ -10,7 +10,7 @@ LDFLAGS = -L C:/msys64/mingw64/lib \
 	-lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 # Target
-TARGET = main.exe
+TARGET = main.out
 SRC = shoota.c headers/saucer.c headers/structure.c headers/trianglecoli.c headers/projectiles.c
 DYNARR_SRC = dynamicarray/dynarr.c
 OBJS = $(SRC:.c=.o) $(DYNARR_SRC:.c=.o)
@@ -24,7 +24,7 @@ $(TARGET): $(OBJS)
 
 # Clean rule
 clean:
-	rm -f *.o dynamicarray/*.o main.exe
+	rm -f *.o dynamicarray/*.o main.exe main.out
 	rm -f headers/*.o
 # Run rule
 run: $(TARGET)

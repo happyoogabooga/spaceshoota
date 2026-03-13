@@ -25,6 +25,11 @@ void deleteNode(projectiles_list *plist, projectile *p );
 void displaynodes(projectiles_list *p, SDL_Renderer *renderer);
 void displaynode(projectile *p, SDL_Renderer *renderer);
 projectile* createNode(structures S, direction Dir);
-//this is a powerful funcion, it moves all projectile on screen
-void moveprojectiles(projectiles_list *plist,int deltatime);
+
+
+//************************************************************* */
+//this is a powerful funcion, it moves all projectile on screen, but it would only work if
+//i had a pointer to a struct as an input, therefore i should return a new hitbox struct from this and set that
+//equal to the old one
+void moveprojectiles(projectiles_list *plist,float deltatime);
 #endif

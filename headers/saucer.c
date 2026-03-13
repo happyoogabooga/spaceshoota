@@ -14,7 +14,7 @@ void display(saucer *S, SDL_Renderer *renderer){
 saucer* createsaucer(structures S, struct saucer *next){
     saucer *new = malloc(sizeof(saucer));
     if (!new) return NULL;
-    new->Type = long_range;
+    new->Type = player;
     new->saucerstructure = S;
     new->next = next;
     return new;
@@ -24,21 +24,21 @@ saucer* createsaucer(structures S, struct saucer *next){
 //projectile, projectiles can either go north to south or south to north
 //so make a global list of two types of projectiles and increment/decrement them
 //with respect to time each frame
-void shoot(saucer sc, bool shoot, projectiles_list plist, int deltatime){
+void shoot(saucer sc, bool shoot, projectiles_list *plist, float deltatime){
     if(sc.Type != player){
         //if i am shooting then add another projectile to the screen starting where
         //the saucer is and put it in the global list
         if(shoot){
-        addNode (&plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y, 32,32},
-            (SDL_Rect){0,64,16,16},"../sprites/spaceships.png",NULL),north));
+        addNode (plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y, 32,32},
+            (SDL_Rect){0,64,16,16},"C:/Users/brubr/projects/cprojects/spaceshoota/sprites/spaceships.png",NULL),north));
         }
-        moveprojectiles(&plist, deltatime);
+        moveprojectiles(plist, deltatime);
     }
     else{
         if(shoot){
-            addNode (&plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y, 32,32},
-            (SDL_Rect){0,64,16,16},"../sprites/spaceships.png",NULL),south));
+            addNode (plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y, 32,32},
+            (SDL_Rect){0,64,16,16},"C:/Users/brubr/projects/cprojects/spaceshoota/sprites/spaceships.png",NULL),south));
         }
-        moveprojectiles(&plist, deltatime);
+        moveprojectiles(plist, deltatime);
     }
 }
