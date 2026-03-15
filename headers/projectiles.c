@@ -38,14 +38,21 @@ void deleteNode(projectiles_list *plist, projectile *p){
     
     // If we found the node to delete
     if (temp->next == p) {
+        SDL_DestroyTexture(temp->next->S.flocation);
         temp->next = temp->next->next;
     }
     // If p wasn't found in the list, do nothing
 }
 //there is a problem here
 void displaynode(projectile *p, SDL_Renderer *renderer){
-    if(p == NULL) return;
-    SDL_RenderCopy(renderer, IMG_LoadTexture(renderer, p->S.flocation),&p->S.structurelookpos ,&p->S.hitbox);
+    if(p == NULL || p->S.flocation == NULL) return;
+    if(p->D == north){
+        SDL_RenderCopyEx(renderer, p->S.flocation,& p->S.structurelookpos,&p->S.hitbox, 270,NULL, 0);
+    }
+    else{
+        SDL_RenderCopyEx(renderer, p->S.flocation,& p->S.structurelookpos,&p->S.hitbox, 90,&(SDL_Point){p->S.hitbox.x, p->S.hitbox.y}, 0);
+    }
+    //SDL_RenderCopy(renderer, p->S.flocation,&p->S.structurelookpos,&p->S.hitbox);
 }
 
 void displaynodes(projectiles_list *p, SDL_Renderer * renderer){
@@ -69,9 +76,11 @@ projectile* createNode(structures S, direction Dir) {
 
     return p;
 }
-//obviously i can add a speed parameter to this later
+
+//functionalities/actions section:
 void moveprojectiles(projectiles_list *plist, float deltatime){
-    if(plist->head != NULL) return;
+    if(plist->head == NULL) return;
+    printf("%d",plist->head->S.hitbox.y);
     projectile *ptemp = plist->head;
     if(plist == NULL || ptemp == NULL){
         return;
@@ -80,12 +89,39 @@ void moveprojectiles(projectiles_list *plist, float deltatime){
         //if the bullet is going north
         if(ptemp->D == north){
             //item->hitbox.y += speed * deltatime;
-            ptemp->S.hitbox.y -= 50 *deltatime;
-            printf("north");
+            ptemp->S.hitbox.y -= 400 *deltatime;
         }
         //if the bullet is going south
         else{
-            ptemp->S.hitbox.y += 50 *deltatime;
+            ptemp->S.hitbox.y += 400 *deltatime;
+        }
+        ptemp = ptemp->next;
+    }
+}
+void ProjectileCollision(projectiles_list *plist, int Screen_width, int Screen_height){
+    if(plist == NULL) return;
+    projectile *curr = plist->head;
+    projectile *prev = NULL;
+
+    while(curr != NULL){
+
+        if(!Projectile_in_screen(Screen_width, Screen_height, curr->S)){
+            projectile *temp = curr;
+
+            if(prev == NULL){
+                plist->head = curr->next;
+                curr = plist->head;
+            }
+            else{
+                prev->next = curr->next;
+                curr = curr->next;
+            }
+
+            free(temp);
+        }
+        else{
+            prev = curr;
+            curr = curr->next;
         }
     }
 }

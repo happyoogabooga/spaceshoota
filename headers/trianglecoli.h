@@ -7,4 +7,5 @@
 #ifndef TRIANGLECOLI_H
 #define TRIANGLECOLI_H
 int StructureCollision(structures player, structures opposition);
+int Projectile_in_screen(int screenwidth, int screenheight, structures projectile);
 #endif

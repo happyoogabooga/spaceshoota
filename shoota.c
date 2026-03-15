@@ -23,15 +23,15 @@ int main(int argc, char** argv)
     renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
     SDL_SetRenderDrawColor( renderer, 0xFF, 0xF1, 0xFF, 0xFF );
     
-    saucer *player = createsaucer(makestructure((SDL_Rect){100, 100, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", NULL), NULL);
+    saucer *player = createsaucer(makestructure((SDL_Rect){100, 100, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", renderer), NULL, 3);
     linkedlist *saucerlist = malloc(sizeof(linkedlist));
-    saucer *newsauc = createsaucer(makestructure((SDL_Rect){300, 300, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", NULL), NULL);
+    saucer *newsauc = createsaucer(makestructure((SDL_Rect){300, 300, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", renderer), NULL, 1);
     saucerlist->head = NULL;
     push_back(player, saucerlist); // first node is assigned, pointer->next will be cleared by push_back
     push_back(newsauc, saucerlist);
     //this is just for testing purposes, make sure to clean up the code and make it more efficient
     structures newn = makestructure((SDL_Rect){player->saucerstructure.hitbox.x, player->saucerstructure.hitbox.y, 32,32},
-    (SDL_Rect){0,64,16,16},"sprites/spaceships.png",NULL);
+    (SDL_Rect){0,64,16,16},"sprites/spaceships.png", renderer);
     SDL_Event ev;
     int oldtime = SDL_GetTicks();
     projectiles_list plist;
@@ -65,11 +65,11 @@ int main(int argc, char** argv)
                 move(&player->saucerstructure, 200.0f, deltatime, up, down, left, right);
             }
         }
-        shoot(*player,shot,&plist,deltatime);
+        ProjectileCollision(&plist, SCREEN_WIDTH, SCREEN_HEIGHT);
+        shoot(*player,shot,&plist,deltatime, renderer);
         SDL_RenderClear(renderer);
         if(plist.head == NULL){
         }
-        //displaynodes(&plist, renderer);
         displaynodes(&plist, renderer);
         //SDL_RenderCopy(renderer, IMG_LoadTexture(renderer, newn.flocation), &newn.structurelookpos, &newn.hitbox);
         displayitems(saucerlist, renderer);

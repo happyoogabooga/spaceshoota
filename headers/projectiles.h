@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "structure.h"
+#include "trianglecoli.h"
 //functionality for both a single projectile and multiple projectiles
 #ifndef PROJECTILES_H
 #define PROJECTILES_H
@@ -27,9 +28,7 @@ void displaynode(projectile *p, SDL_Renderer *renderer);
 projectile* createNode(structures S, direction Dir);
 
 
-//************************************************************* */
-//this is a powerful funcion, it moves all projectile on screen, but it would only work if
-//i had a pointer to a struct as an input, therefore i should return a new hitbox struct from this and set that
-//equal to the old one
+
 void moveprojectiles(projectiles_list *plist,float deltatime);
+void ProjectileCollision(projectiles_list *plist, int Screen_width, int Screen_height);
 #endif

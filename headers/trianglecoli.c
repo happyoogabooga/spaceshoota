@@ -12,3 +12,14 @@ int StructureCollision(structures a, structures b) {
     //no collision
     return 0;
 }
+int Projectile_in_screen(int screenwidth, int screenheight, structures projectile){
+    //if the projectile is in the screen
+    if(projectile.hitbox.y + projectile.hitbox.h > 0 &&
+        projectile.hitbox.y < screenheight &&
+        projectile.hitbox.x < screenwidth &&
+        projectile.hitbox.x + projectile.hitbox.w > 0 
+    ) return 1; //we are in the screen
+
+    //if the projectile is out of the screen
+    return 0;
+}

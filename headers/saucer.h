@@ -15,5 +15,5 @@ typedef struct saucer{
     struct saucer *next;
 }saucer;
 void display(saucer* S, SDL_Renderer * renderer);
-saucer* createsaucer(structures S, struct saucer *next);
-void shoot(saucer sc, bool shoot, projectiles_list *plist, float deltatime);
+saucer* createsaucer(structures S, struct saucer *next, int SaucerType);
+void shoot(saucer sc, bool shoot, projectiles_list *plist, float deltatime, SDL_Renderer * renderer);
