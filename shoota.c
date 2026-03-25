@@ -23,9 +23,9 @@ int main(int argc, char** argv)
     renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
     SDL_SetRenderDrawColor( renderer, 0xFF, 0xF1, 0xFF, 0xFF );
     
-    saucer *player = createsaucer(makestructure((SDL_Rect){100, 100, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", renderer), NULL, 3);
+    saucer *player = createsaucer(makestructure((SDL_Rect){100, 100, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", renderer), NULL, 4);
     linkedlist *saucerlist = malloc(sizeof(linkedlist));
-    saucer *newsauc = createsaucer(makestructure((SDL_Rect){300, 300, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", renderer), NULL, 1);
+    saucer *newsauc = createsaucer(makestructure((SDL_Rect){300, 300, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", renderer), NULL, long_range);
     saucerlist->head = NULL;
     push_back(player, saucerlist); // first node is assigned, pointer->next will be cleared by push_back
     push_back(newsauc, saucerlist);
@@ -40,6 +40,8 @@ int main(int argc, char** argv)
     while(true){
         int newtime = SDL_GetTicks();
         float deltatime = (float)(newtime - oldtime) / 1000.0f;  // Convert to seconds for proper delta time usage
+        collision(&plist, newsauc);
+        ProjectileCollision(&plist, SCREEN_WIDTH, SCREEN_HEIGHT);
         //all of this besides deltatime can go in one function, but for now this is fine
         while(SDL_PollEvent(&ev)){
             if (ev.type == SDL_QUIT) {
@@ -65,7 +67,6 @@ int main(int argc, char** argv)
                 move(&player->saucerstructure, 200.0f, deltatime, up, down, left, right);
             }
         }
-        ProjectileCollision(&plist, SCREEN_WIDTH, SCREEN_HEIGHT);
         shoot(*player,shot,&plist,deltatime, renderer);
         SDL_RenderClear(renderer);
         if(plist.head == NULL){

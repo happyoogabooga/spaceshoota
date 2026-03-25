@@ -26,7 +26,10 @@ void deleteNode(projectiles_list *plist, projectile *p){
     
     // Special case: deleting the head node
     if (plist->head == p) {
-        plist->head = plist->head->next;
+        projectile *temp = plist->head;
+        plist->head = temp->next;
+        SDL_DestroyTexture(temp->S.flocation);
+        free(temp);
         return;
     }
     
@@ -50,7 +53,7 @@ void displaynode(projectile *p, SDL_Renderer *renderer){
         SDL_RenderCopyEx(renderer, p->S.flocation,& p->S.structurelookpos,&p->S.hitbox, 270,NULL, 0);
     }
     else{
-        SDL_RenderCopyEx(renderer, p->S.flocation,& p->S.structurelookpos,&p->S.hitbox, 90,&(SDL_Point){p->S.hitbox.x, p->S.hitbox.y}, 0);
+        SDL_RenderCopyEx(renderer, p->S.flocation,& p->S.structurelookpos,&p->S.hitbox, 90,NULL, 0);
     }
     //SDL_RenderCopy(renderer, p->S.flocation,&p->S.structurelookpos,&p->S.hitbox);
 }
@@ -80,7 +83,6 @@ projectile* createNode(structures S, direction Dir) {
 //functionalities/actions section:
 void moveprojectiles(projectiles_list *plist, float deltatime){
     if(plist->head == NULL) return;
-    printf("%d",plist->head->S.hitbox.y);
     projectile *ptemp = plist->head;
     if(plist == NULL || ptemp == NULL){
         return;
@@ -99,29 +101,38 @@ void moveprojectiles(projectiles_list *plist, float deltatime){
     }
 }
 void ProjectileCollision(projectiles_list *plist, int Screen_width, int Screen_height){
-    if(plist == NULL) return;
+    if (plist == NULL || plist->head == NULL) return;
+
     projectile *curr = plist->head;
     projectile *prev = NULL;
 
-    while(curr != NULL){
+    while (curr != NULL) {
+        // Save next FIRST (always safe)
+        projectile *next = curr->next;
 
-        if(!Projectile_in_screen(Screen_width, Screen_height, curr->S)){
-            projectile *temp = curr;
+        if (!Projectile_in_screen(Screen_width, Screen_height, curr->S)) {
 
-            if(prev == NULL){
-                plist->head = curr->next;
-                curr = plist->head;
+            // Remove from list
+            if (prev == NULL) {
+                plist->head = next;   // deleting head
+            } else {
+                prev->next = next;
             }
-            else{
-                prev->next = curr->next;
-                curr = curr->next;
+
+            // 🔴 IMPORTANT: Only destroy texture if this projectile OWNS it
+            if (curr->S.flocation != NULL) {
+                SDL_DestroyTexture(curr->S.flocation);
+                curr->S.flocation = NULL;
             }
 
-            free(temp);
-        }
-        else{
+            free(curr);
+        } 
+        else {
+            // Only advance prev if we DIDN’T delete
             prev = curr;
-            curr = curr->next;
         }
+
+        // Always move forward using saved pointer
+        curr = next;
     }
 }
