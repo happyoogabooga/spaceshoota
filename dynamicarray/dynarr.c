@@ -44,6 +44,11 @@ void removenode(saucer *n, linkedlist *l) {
     // case 1: removing head
     if (l->head == n) {
         l->head = l->head->next;
+        // deallocate the saucer
+        if (n->saucerstructure.flocation) {
+            SDL_DestroyTexture(n->saucerstructure.flocation);
+        }
+        free(n);
         return;
     }
 
@@ -58,12 +63,37 @@ void removenode(saucer *n, linkedlist *l) {
 
     // unlink saucer
     curr->next = curr->next->next;
+    // deallocate the saucer
+    if (n->saucerstructure.flocation) {
+        SDL_DestroyTexture(n->saucerstructure.flocation);
+    }
+    free(n);
 }
 //hope this is good 
 void displayitems(linkedlist *l, SDL_Renderer * renderer){
     saucer *H = l->head;
     while(H != NULL){
         display(H, renderer);
+        H = H->next;
+    }
+}
+//I might not always want to do things this way, I might in stead for example want to
+//decrement the health of my saucer instead of instantly deleting it, then have a checkhealth function
+///that deletes the node it its health is next
+void collision_n(projectiles_list *plist, linkedlist *l){
+    saucer *H = l->head;
+    saucer *prev = NULL;
+    while(H != NULL){
+        saucer *next = H->next;
+        if(collision(plist, H) == 1){
+            prev = H;
+            H->health--;
+            if(H->health <= 0){
+                removenode(H, l);
+            }
+            H = next;
+            continue;
+        }
         H = H->next;
     }
 }

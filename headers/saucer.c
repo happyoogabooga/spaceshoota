@@ -21,6 +21,7 @@ saucer* createsaucer(structures S, struct saucer *next, int SaucerType){
     new->saucerstructure = S;
     new->next = next;
     new->Type = SaucerType;
+    new->health = 10;
     return new;
 }
 //idea, i could have a global list or projectiles,
@@ -34,7 +35,7 @@ void shoot(saucer sc, bool shoot, projectiles_list *plist, float deltatime, SDL_
         //if i am shooting then add another projectile to the screen starting where
         //the saucer is and put it in the global list=
         if(shoot && stutter <= 0){
-        addNode (plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y - 10, 32,32},
+        addNode (plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y - 30, 32,32},
             (SDL_Rect){0,64,16,16},"C:/Users/brubr/projects/cprojects/spaceshoota/sprites/spaceships.png", renderer),north));
             stutter += 20;
         }
@@ -44,7 +45,7 @@ void shoot(saucer sc, bool shoot, projectiles_list *plist, float deltatime, SDL_
     else{
         if(shoot && stutter <= 0){
             printf("%d\n%d", sc.Type, player);
-            addNode (plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y, 32,32},
+            addNode (plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y +100, 32,32},
             (SDL_Rect){0,64,16,16},"C:/Users/brubr/projects/cprojects/spaceshoota/sprites/spaceships.png", renderer),south));
             stutter += 20;
         }
@@ -52,7 +53,8 @@ void shoot(saucer sc, bool shoot, projectiles_list *plist, float deltatime, SDL_
         if(stutter >= 0)stutter--;
     }
 }
-void collision(projectiles_list *plist , saucer *S){
+int collision(projectiles_list *plist , saucer *S){
+    int T_F = 0; //if there is no collision with the saucer return 0, if there is a collision return 1
     projectile *p = plist->head;
     projectile *prev = NULL;
     //fix this
@@ -64,10 +66,12 @@ void collision(projectiles_list *plist , saucer *S){
             //delete the privious node,
             //continue back up to the top, by setting p = next
             prev = p;
+            T_F = 1;
             deleteNode(plist,prev);
             p = next;
             continue;
         } 
         p = next;  // move forward safely
     }
+    return T_F;
 }

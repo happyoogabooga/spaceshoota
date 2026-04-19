@@ -40,8 +40,7 @@ int main(int argc, char** argv)
     while(true){
         int newtime = SDL_GetTicks();
         float deltatime = (float)(newtime - oldtime) / 1000.0f;  // Convert to seconds for proper delta time usage
-        collision(&plist, newsauc);
-        ProjectileCollision(&plist, SCREEN_WIDTH, SCREEN_HEIGHT);
+        collision_n(&plist,saucerlist);
         //all of this besides deltatime can go in one function, but for now this is fine
         while(SDL_PollEvent(&ev)){
             if (ev.type == SDL_QUIT) {
