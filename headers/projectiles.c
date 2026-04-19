@@ -119,7 +119,7 @@ void ProjectileCollision(projectiles_list *plist, int Screen_width, int Screen_h
                 prev->next = next;
             }
 
-            // 🔴 IMPORTANT: Only destroy texture if this projectile OWNS it
+
             if (curr->S.flocation != NULL) {
                 SDL_DestroyTexture(curr->S.flocation);
                 curr->S.flocation = NULL;

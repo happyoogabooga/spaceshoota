@@ -9,7 +9,13 @@
 typedef enum {
     long_range, short_range, medium_range, mini_boss, player
 } typeofsaucer;
+
+typedef enum states{
+    idle, movetowards, runaway, attack, passive
+} states;
+
 typedef struct saucer{
+    states state;
     typeofsaucer Type;
     structures saucerstructure;
     struct saucer *next;
