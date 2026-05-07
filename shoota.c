@@ -5,6 +5,7 @@
 #include "dynamicarray/dynarr.h"
 #include "headers/trianglecoli.h"
 #include "headers/movestruct.h"
+#include "saucerai/finitestm.h"
 int SCREEN_WIDTH = 1920;
 int SCREEN_HEIGHT = 1080;
 SDL_Renderer *renderer;
@@ -58,14 +59,15 @@ int main(int argc, char** argv)
         bool left = state[SDL_SCANCODE_A];
         bool right = state[SDL_SCANCODE_D];
         bool shot = state[SDL_SCANCODE_SPACE];
-        saucer copy = *player; // Create a copy of the player saucer for collision checking
-        if(up || down || left || right || shot) {
-            move(&copy.saucerstructure, 200.0f, deltatime, up, down, left, right);  // Increased speed for better feel
-            if (!StructureCollision(copy.saucerstructure, newsauc->saucerstructure)) {
+        //saucer copy = *player; // Create a copy of the player saucer for collision checking
+        //if(up || down || left || right || shot) {
+        //    move(&copy.saucerstructure, 200.0f, deltatime, up, down, left, right);  // Increased speed for better feel
+        //    if (!StructureCollision(copy.saucerstructure, newsauc->saucerstructure)) {
                 // Only move the player if there is no collision with the newsauc
+                runaway(&player->saucerstructure,&newsauc->saucerstructure, deltatime);
                 move(&player->saucerstructure, 200.0f, deltatime, up, down, left, right);
-            }
-        }
+        //    }
+        //}
         shoot(*player,shot,&plist,deltatime, renderer);
         SDL_RenderClear(renderer);
         if(plist.head == NULL){

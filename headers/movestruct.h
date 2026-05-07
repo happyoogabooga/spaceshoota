@@ -6,7 +6,7 @@
 //this will not handle collision, that will be handled later.
 //velocity = displacement / time
 //for this to work i need speed direction and time, so i need a keyhandler,
-void move(structures *item, float speed, float deltatime, bool up, bool down, bool left, bool right){
+static inline void move(structures *item, float speed, float deltatime, bool up, bool down, bool left, bool right){
     // deltatime is already in seconds (converted in main loop)
     //this is where the movement will be handled, it will be based on the direction and speed
     //for example, if the direction is up, the y coordinate will be decreased by the speed multiplied by the time
