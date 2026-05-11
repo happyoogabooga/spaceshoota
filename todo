@@ -1,1 +1,3 @@
-make level editor
+Work on enemy ai
+The idea to make space ships move in unison is simple, make a vector of enemies, they can be at a different spot on the screen, but the thing to remember is, they must all keep the same state, How does one do this? its simple,just make the enemies in one linked list, and if the head state changes, so does everything else
+make a hud
