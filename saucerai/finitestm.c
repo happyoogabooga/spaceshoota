@@ -65,3 +65,6 @@ void runaway(structures * main_character, structures *enemy, float deltatime){
         move(enemy, 100.0, deltatime, false, false, true, false);
     }
 }
+void attack(saucer *main_character, saucer *enemy, projectiles_list * plist, SDL_Renderer *renderer, float deltatime){
+    shoot(enemy, true, plist, deltatime, renderer);
+}

@@ -22,35 +22,31 @@ saucer* createsaucer(structures S, struct saucer *next, int SaucerType){
     new->next = next;
     new->Type = SaucerType;
     new->health = 10;
+    new->ammunition = 100;
     return new;
 }
-//idea, i could have a global list or projectiles,
-//and basically make each each suacer be able to generate a new
-//projectile, projectiles can either go north to south or south to north
-//so make a global list of two types of projectiles and increment/decrement them
-//with respect to time each frame
-int stutter = 0;
-void shoot(saucer sc, bool shoot, projectiles_list *plist, float deltatime, SDL_Renderer * renderer){
-    if(sc.Type == player){
-        //if i am shooting then add another projectile to the screen starting where
-        //the saucer is and put it in the global list=
-        if(shoot && stutter <= 0){
-        addNode (plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y - 30, 32,32},
-            (SDL_Rect){0,64,16,16},"C:/Users/brubr/projects/cprojects/spaceshoota/sprites/spaceships.png", renderer),north));
-            stutter += 20;
+
+void shoot(saucer *sc, bool shoot, projectiles_list *plist, float deltatime, SDL_Renderer * renderer){
+    if(sc->Type == player){
+        //if my ammo is greater than 0, then shoot, if not do not shoot
+        if(shoot && sc->ammunition > 0){
+        addNode (plist,createNode(makestructure((SDL_Rect){sc->saucerstructure.hitbox.x, sc->saucerstructure.hitbox.y - 30, 32,32},
+            (SDL_Rect){0,64,16,16},"sprites/spaceships.png", renderer),north));
+        addNode (plist,createNode(makestructure((SDL_Rect){sc->saucerstructure.hitbox.x + 96, sc->saucerstructure.hitbox.y - 30, 32,32},
+            (SDL_Rect){0,64,16,16},"sprites/spaceships.png", renderer),north));
+            sc->ammunition-=11;
         }
-        if(stutter >= 0)stutter--;
+        if(sc->ammunition <= 100)sc->ammunition++;
         moveprojectiles(plist, deltatime);
     }
     else{
-        if(shoot && stutter <= 0){
-            printf("%d\n%d", sc.Type, player);
-            addNode (plist,createNode(makestructure((SDL_Rect){sc.saucerstructure.hitbox.x, sc.saucerstructure.hitbox.y +100, 32,32},
-            (SDL_Rect){0,64,16,16},"C:/Users/brubr/projects/cprojects/spaceshoota/sprites/spaceships.png", renderer),south));
-            stutter += 20;
+        if(shoot && sc->ammunition > 0){
+            addNode (plist,createNode(makestructure((SDL_Rect){sc->saucerstructure.hitbox.x, sc->saucerstructure.hitbox.y +100, 32,32},
+            (SDL_Rect){16,64,16,16},"sprites/spaceships.png", renderer),south));
+            sc->ammunition-=11;
         }
+        if(sc->ammunition <= 100)sc->ammunition++;
         moveprojectiles(plist, deltatime);
-        if(stutter >= 0)stutter--;
     }
 }
 int collision(projectiles_list *plist , saucer *S){

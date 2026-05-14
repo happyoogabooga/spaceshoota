@@ -5,6 +5,7 @@
 #include "dynamicarray/dynarr.h"
 #include "headers/trianglecoli.h"
 #include "headers/movestruct.h"
+#include "hud/hud.h"
 #include "saucerai/finitestm.h"
 int SCREEN_WIDTH = 1920;
 int SCREEN_HEIGHT = 1080;
@@ -26,10 +27,10 @@ int main(int argc, char** argv)
     
     saucer *player = createsaucer(makestructure((SDL_Rect){100, 100, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", renderer), NULL, 4);
     linkedlist *saucerlist = malloc(sizeof(linkedlist));
-    saucer *newsauc = createsaucer(makestructure((SDL_Rect){300, 300, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", renderer), NULL, long_range);
+    saucer *enemy = createsaucer(makestructure((SDL_Rect){300, 300, 128, 128},(SDL_Rect){21, 0, 22, 43}, "sprites/spaceships.png", renderer), NULL, long_range);
     saucerlist->head = NULL;
     push_back(player, saucerlist); // first node is assigned, pointer->next will be cleared by push_back
-    push_back(newsauc, saucerlist);
+    push_back(enemy, saucerlist);
     //this is just for testing purposes, make sure to clean up the code and make it more efficient
     structures newn = makestructure((SDL_Rect){player->saucerstructure.hitbox.x, player->saucerstructure.hitbox.y, 32,32},
     (SDL_Rect){0,64,16,16},"sprites/spaceships.png", renderer);
@@ -59,22 +60,23 @@ int main(int argc, char** argv)
         bool left = state[SDL_SCANCODE_A];
         bool right = state[SDL_SCANCODE_D];
         bool shot = state[SDL_SCANCODE_SPACE];
-        //saucer copy = *player; // Create a copy of the player saucer for collision checking
-        //if(up || down || left || right || shot) {
-        //    move(&copy.saucerstructure, 200.0f, deltatime, up, down, left, right);  // Increased speed for better feel
-        //    if (!StructureCollision(copy.saucerstructure, newsauc->saucerstructure)) {
-                // Only move the player if there is no collision with the newsauc
-                runaway(&player->saucerstructure,&newsauc->saucerstructure, deltatime);
+        saucer *enemy = (saucerlist->head != NULL) ? saucerlist->head->next : NULL;
+        saucer copy = *player; // Create a copy of the player saucer for collision checking
+        if(up || down || left || right || shot) {
+            move(&copy.saucerstructure, 200.0f, deltatime, up, down, left, right);  // Increased speed for better feel
+            if (enemy == NULL || !StructureCollision(copy.saucerstructure, enemy->saucerstructure)) {
+                // Only move the player if there is no collision with the current enemy in the list
                 move(&player->saucerstructure, 200.0f, deltatime, up, down, left, right);
-        //    }
-        //}
-        shoot(*player,shot,&plist,deltatime, renderer);
+            }
+        }
+        shoot(player,shot,&plist,deltatime, renderer);
         SDL_RenderClear(renderer);
         if(plist.head == NULL){
         }
         displaynodes(&plist, renderer);
         //SDL_RenderCopy(renderer, IMG_LoadTexture(renderer, newn.flocation), &newn.structurelookpos, &newn.hitbox);
         displayitems(saucerlist, renderer);
+        displayhud(player->health, player->ammunition, renderer);
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00 );
         SDL_RenderPresent(renderer);
         oldtime = newtime;

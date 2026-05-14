@@ -17,14 +17,15 @@ typedef enum states{
 } states;
 
 typedef struct saucer{
-    int health;
-    states state;
-    typeofsaucer Type;
+    int ammunition; //this is how much ammo you have, can grow and shrink in size;
+    int health; //this is how much healt you have, once again can grow and shrink in size
+    states state; //This is what you are currently doing, are you attacking or passive for example.
+    typeofsaucer Type; //this is what you are
     structures saucerstructure;
     struct saucer *next;
 }saucer;
 void display(saucer* S, SDL_Renderer * renderer);
 saucer* createsaucer(structures S, struct saucer *next, int SaucerType);
-void shoot(saucer sc, bool shoot, projectiles_list *plist, float deltatime, SDL_Renderer * renderer);
+void shoot(saucer *sc, bool shoot, projectiles_list *plist, float deltatime, SDL_Renderer * renderer);
 int collision(projectiles_list *plist , saucer *S);
 #endif

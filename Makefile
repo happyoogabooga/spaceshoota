@@ -3,7 +3,7 @@ CC = C:/msys64/ucrt64/bin/gcc.exe
 # Compiler flags
 CFLAGS = -fdiagnostics-color=always -g\
 	-I C:/msys64/ucrt64/include/SDL2 \
-	-I ./headers
+	-I ./headers\
 
 # Linker flags
 LDFLAGS = -L C:/msys64/mingw64/lib \
@@ -13,7 +13,8 @@ LDFLAGS = -L C:/msys64/mingw64/lib \
 TARGET = main.out
 SRC = shoota.c headers/saucer.c headers/structure.c headers/trianglecoli.c headers/projectiles.c saucerai/finitestm.c
 DYNARR_SRC = dynamicarray/dynarr.c
-OBJS = $(SRC:.c=.o) $(DYNARR_SRC:.c=.o)
+HUD_SRC = hud/hud.c
+OBJS = $(SRC:.c=.o) $(DYNARR_SRC:.c=.o) $(HUD_SRC:.c=.o)
 
 # Build rule
 $(TARGET): $(OBJS)
